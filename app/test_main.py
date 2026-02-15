@@ -1,33 +1,47 @@
+import pytest
 from app.main import get_human_age
 
 
-def test_zero_value() -> None:
-    assert get_human_age(0, 0) == [0, 0]
+@pytest.mark.parametrize(
+    "cat_age, dog_age, expected",
+    [
+        (0, 0, [0, 0]),
+        (14, 14, [0, 0]),
+        (15, 15, [1, 1]),
+        (23, 23, [1, 1]),
+        (24, 24, [2, 2]),
+        (27, 27, [2, 2]),
+        (28, 28, [3, 2]),
+        (100, 100, [21, 17]),
+    ],
+)
 
+def test_correct_age_conversion(cat_age, dog_age, expected):
+    assert get_human_age(cat_age, dog_age) == expected
 
-def test_year_before_age_one() -> None:
-    assert get_human_age(14, 14) == [0, 0]
+@pytest.mark.parametrize(
+    "cat_age, dog_age", 
+    [
+        ("10", 10),
+        (10, "10"),
+        (10.5, 10),
+        (None, 5)
+    ]
+)
 
+def test_should_raise_type_error(cat_age, dog_age):
+    with pytest.raises(TypeError):
+        get_human_age(cat_age, dog_age)
 
-def test_animals_turning_one() -> None:
-    assert get_human_age(15, 15) == [1, 1]
+@pytest.mark.parametrize(
+    "cat_age, dog_age",
+    [
+        (-1, 5),
+        (5, -1),
+        (-10, -10)
+    ]
+)
 
-
-def test_year_before_age_two() -> None:
-    assert get_human_age(23, 23) == [1, 1]
-
-
-def test_animals_turning_two() -> None:
-    assert get_human_age(24, 24) == [2, 2]
-
-
-def test_year_before_cat_turns_three() -> None:
-    assert get_human_age(27, 27) == [2, 2]
-
-
-def test_year_cat_turns_three() -> None:
-    assert get_human_age(28, 28) == [3, 2]
-
-
-def test_animal_large_age_amount() -> None:
-    assert get_human_age(100, 100) == [21, 17]
+def test_should_raise_value_error(cat_age, dog_age):
+    with pytest.raises(ValueError):
+        get_human_age(cat_age, dog_age)
