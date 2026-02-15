@@ -15,12 +15,16 @@ from app.main import get_human_age
         (100, 100, [21, 17]),
     ],
 )
-
-def test_correct_age_conversion(cat_age, dog_age, expected):
+def test_correct_age_conversion(
+    cat_age: int,
+    dog_age: int,
+    expected: list
+) -> None:
     assert get_human_age(cat_age, dog_age) == expected
 
+
 @pytest.mark.parametrize(
-    "cat_age, dog_age", 
+    "cat_age, dog_age",
     [
         ("10", 10),
         (10, "10"),
@@ -28,10 +32,10 @@ def test_correct_age_conversion(cat_age, dog_age, expected):
         (None, 5)
     ]
 )
-
-def test_should_raise_type_error(cat_age, dog_age):
+def test_should_raise_type_error(cat_age: int, dog_age: int) -> None:
     with pytest.raises(TypeError):
         get_human_age(cat_age, dog_age)
+
 
 @pytest.mark.parametrize(
     "cat_age, dog_age",
@@ -41,7 +45,6 @@ def test_should_raise_type_error(cat_age, dog_age):
         (-10, -10)
     ]
 )
-
-def test_should_raise_value_error(cat_age, dog_age):
+def test_should_raise_value_error(cat_age: int, dog_age: int) -> None:
     with pytest.raises(ValueError):
         get_human_age(cat_age, dog_age)
